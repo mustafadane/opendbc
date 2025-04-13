@@ -156,13 +156,19 @@ class CarInterface(CarInterfaceBase):
     if candidate in TSS2_CAR:
       ret.flags |= ToyotaFlags.RAISED_ACCEL_LIMIT.value
       if sp_tss2_long_tune:
-        ret.vEgoStopping = 0.15
-        ret.vEgoStarting = 0.22
-        ret.stoppingDecelRate = 0.01  # reach stopping target smoothly
+        ret.vEgoStopping = 0.25
+        ret.vEgoStarting = 0.25
+        if candidate == CAR.TOYOTA_RAV4_TSS2:
+          ret.stoppingDecelRate = 0.05  # optimal on rav4
+        else:
+          ret.stoppingDecelRate = 0.008  # optimal on corollaH, prius
       else:
         ret.vEgoStopping = 0.25
         ret.vEgoStarting = 0.25
-        ret.stoppingDecelRate = 0.1  # reach stopping target smoothly
+        if candidate == CAR.TOYOTA_RAV4_TSS2:
+          ret.stoppingDecelRate = 0.05  # optimal on rav4
+        else:
+          ret.stoppingDecelRate = 0.008  # optimal on corollaH, prius
 
       # Hybrids have much quicker longitudinal actuator response
       if ret.flags & ToyotaFlags.HYBRID.value:
